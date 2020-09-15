@@ -54,7 +54,7 @@ import (
 	"log"
 	"os"
 
-	gen "github.com/hooklift/gowsdl"
+	gen "github.com/SemyonL95/gowsdl"
 )
 
 // Version is initialized in compilation time by go build.
