@@ -280,16 +280,16 @@ func (s *Client) SetHeaders(headers ...interface{}) {
 }
 
 // CallContext performs HTTP POST request with a context
-func (s *Client) CallContext(ctx context.Context, soapAction string, request, response interface{}) error {
-	return s.call(ctx, soapAction, request, response)
+func (s *Client) CallContext(ctx context.Context, soapAction string, request, response interface{}, headers map[string]string) error {
+	return s.call(ctx, soapAction, request, response, headers)
 }
 
 // Call performs HTTP POST request
-func (s *Client) Call(soapAction string, request, response interface{}) error {
-	return s.call(context.Background(), soapAction, request, response)
+func (s *Client) Call(soapAction string, request, response interface{}, headers map[string]string) error {
+	return s.call(context.Background(), soapAction, request, response, headers)
 }
 
-func (s *Client) call(ctx context.Context, soapAction string, request, response interface{}) error {
+func (s *Client) call(ctx context.Context, soapAction string, request, response interface{}, headers map[string]string) error {
 	envelope := SOAPEnvelope{}
 
 	if s.headers != nil && len(s.headers) > 0 {

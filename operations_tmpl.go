@@ -43,9 +43,9 @@ var opsTmpl = `
 		{{$requestType := findType .Input.Message | replaceReservedWords | makePublic}}
 		{{$soapAction := findSOAPAction .Name $privateType}}
 		{{$responseType := findType .Output.Message | replaceReservedWords | makePublic}}
-		func (service *{{$privateType}}) {{makePublic .Name | replaceReservedWords}}Context (ctx context.Context, {{if ne $requestType ""}}request *{{$requestType}}{{end}}) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error) {
+		func (service *{{$privateType}}) {{makePublic .Name | replaceReservedWords}}Context (ctx context.Context, {{if ne $requestType ""}}request *{{$requestType}}{{end}}, headers map[string]string) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error) {
 			{{if ne $responseType ""}}response := new({{$responseType}}){{end}}
-			err := service.client.CallContext(ctx, "{{if ne $soapAction ""}}{{$soapAction}}{{else}}''{{end}}", {{if ne $requestType ""}}request{{else}}nil{{end}}, {{if ne $responseType ""}}response{{else}}struct{}{}{{end}})
+			err := service.client.CallContext(ctx, "{{if ne $soapAction ""}}{{$soapAction}}{{else}}''{{end}}", {{if ne $requestType ""}}request{{else}}nil{{end}}, {{if ne $responseType ""}}response{{else}}struct{}{}{{end}}, headers)
 			if err != nil {
 				return {{if ne $responseType ""}}nil, {{end}}err
 			}
@@ -53,10 +53,11 @@ var opsTmpl = `
 			return {{if ne $responseType ""}}response, {{end}}nil
 		}
 
-		func (service *{{$privateType}}) {{makePublic .Name | replaceReservedWords}} ({{if ne $requestType ""}}request *{{$requestType}}{{end}}) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error) {
+		func (service *{{$privateType}}) {{makePublic .Name | replaceReservedWords}} ({{if ne $requestType ""}}request *{{$requestType}}{{end}}, headers map[string]string) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error) {
 			return service.{{makePublic .Name | replaceReservedWords}}Context(
 				context.Background(),
 				{{if ne $requestType ""}}request,{{end}}
+				headers,
 			)
 		}
 
