@@ -22,9 +22,9 @@ var opsTmpl = `
 			// {{range .Faults}}
 			//   - {{.Name}} {{.Doc}}{{end}}{{end}}
 			{{if ne .Doc ""}}/* {{.Doc}} */{{end}}
-			{{makePublic .Name | replaceReservedWords}} ({{if ne $requestType ""}}request *{{$requestType}}{{end}}) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error)
+			{{makePublic .Name | replaceReservedWords}} ({{if ne $requestType ""}}request *{{$requestType}}{{end}}, headers map[string]string) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error)
 			{{/*end*/}}
-			{{makePublic .Name | replaceReservedWords}}Context (ctx context.Context, {{if ne $requestType ""}}request *{{$requestType}}{{end}}) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error)
+			{{makePublic .Name | replaceReservedWords}}Context (ctx context.Context, {{if ne $requestType ""}}request *{{$requestType}}{{end}}, headers map[string]string) ({{if ne $responseType ""}}*{{$responseType}}, {{end}}error)
 			{{/*end*/}}
 		{{end}}
 	}
