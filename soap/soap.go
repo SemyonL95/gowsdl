@@ -337,6 +337,11 @@ func (s *Client) call(ctx context.Context, soapAction string, request, response 
 			req.Header.Set(k, v)
 		}
 	}
+
+	for k, v := range headers {
+		req.Header.Set(k, v)
+	}
+
 	req.Close = true
 
 	client := s.opts.client
