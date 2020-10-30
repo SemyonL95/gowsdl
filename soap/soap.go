@@ -96,7 +96,12 @@ type SOAPFault struct {
 	Code   string `xml:"faultcode,omitempty"`
 	String string `xml:"faultstring,omitempty"`
 	Actor  string `xml:"faultactor,omitempty"`
-	Detail string `xml:"detail,omitempty"`
+	Detail *SOAPFaultDetail `xml:"errorDetail,omitempty"`
+}
+
+type SOAPFaultDetail struct {
+	Code string `xml:"code"`
+	Message string `xml:"message"`
 }
 
 func (f *SOAPFault) Error() string {
@@ -383,6 +388,8 @@ func (s *Client) call(ctx context.Context, soapAction string, request, response 
 	}
 
 	fault := respEnvelope.Body.Fault
+	fmt.Printf("======FAULT: %+v", fault)
+
 	if fault != nil {
 		return fault
 	}
