@@ -99,7 +99,9 @@ type SOAPFault struct {
 	Code   string `xml:"faultcode,omitempty"`
 	String string `xml:"faultstring,omitempty"`
 	Actor  string `xml:"faultactor,omitempty"`
-	Detail *SOAPFaultDetail `xml:"errorDetail,omitempty"`
+	Detail struct {
+		DetailError SOAPFaultDetail `xml:"errorDetail,omitempty"`
+	} `xml:"detail,omitempty"`
 }
 
 type SOAPFaultDetail struct {
