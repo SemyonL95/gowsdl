@@ -6,10 +6,13 @@ import (
 	"crypto/tls"
 	"encoding/xml"
 	"fmt"
+	"github.com/davecgh/go-spew/spew"
 	"net"
 	"net/http"
 	"time"
 )
+
+var DebugResponse bool = false
 
 type SOAPEncoder interface {
 	Encode(v interface{}) error
@@ -367,6 +370,10 @@ func (s *Client) call(ctx context.Context, soapAction string, request, response 
 		return err
 	}
 	defer res.Body.Close()
+
+	if DebugResponse {
+		spew.Dump("SOAP Response: ", res)
+	}
 
 	respEnvelope := new(SOAPEnvelope)
 	respEnvelope.Body = SOAPBody{Content: response}
