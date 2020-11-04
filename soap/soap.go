@@ -388,7 +388,6 @@ func (s *Client) call(ctx context.Context, soapAction string, request, response 
 	}
 
 	fault := respEnvelope.Body.Fault
-	fmt.Printf("======FAULT: %+v", fault)
 
 	if fault != nil {
 		return fault
